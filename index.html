@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Redirector</title>
+    <style>
+        /* Blue animated background */
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(120deg, #1e90ff, #87cefa);
+            background-size: 300% 300%;
+            animation: gradientAnimation 6s ease infinite;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            position: relative;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4682b4;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #5a9bd3;
+        }
+
+        .floating-squares,
+        .floating-circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .square,
+        .circle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.3);
+            animation: floatAnimation 10s linear infinite;
+        }
+
+        .square {
+            width: 20px;
+            height: 20px;
+        }
+
+        .circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        @keyframes floatAnimation {
+            0% {
+                transform: translateY(100vh);
+            }
+
+            100% {
+                transform: translateY(-100vh);
+            }
+        }
+    </style>
+    <script>
+        function redirect() {
+            const url = document.getElementById('urlInput').value;
+
+            // Check if the input is a valid data URL or standard URL
+            if (url.startsWith('data:text/html') || url.startsWith('http://') || url.startsWith('https://')) {
+                window.location.href = url; // Redirect to the entered URL
+            } else {
+                alert('Please enter a valid URL (http, https, or data:text/html).');
+            }
+        }
+
+        function createFloatingShapes() {
+            const squaresContainer = document.querySelector('.floating-squares');
+            const circlesContainer = document.querySelector('.floating-circles');
+
+            for (let i = 0; i < 20; i++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                square.style.left = `${Math.random() * 100}vw`;
+                square.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                squaresContainer.appendChild(square);
+
+                const circle = document.createElement('div');
+                circle.classList.add('circle');
+                circle.style.left = `${Math.random() * 100}vw`;
+                circle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                circlesContainer.appendChild(circle);
+            }
+        }
+
+        window.onload = createFloatingShapes;
+    </script>
+</head>
+
+<body>
+    <div class="floating-squares"></div>
+    <div class="floating-circles"></div>
+    <div class="container">
+        <h1>URL Redirector</h1>
+        <p>Enter a URL to redirect:</p>
+        <input type="text" id="urlInput" placeholder="Enter URL (http/https or data:text/html)" />
+        <br />
+        <button onclick="redirect()">Redirect</button>
+    </div>
+</body>
+</html>
