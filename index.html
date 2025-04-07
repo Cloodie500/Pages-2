@@ -36,7 +36,7 @@
                 if (parsedUrl.protocol === "data:") {
                     originalContent = document.body.innerHTML; // Save the original content
                     const decodedContent = decodeURIComponent(url.split(",")[1]);
-                    document.body.innerHTML = `<div>${decodedContent}</div><button onclick="exitEmbeddedPage()" style="padding:10px 20px;border-radius:5px;background-color:#b22222;color:white;cursor:pointer;margin-top:20px;">Exit</button>`;
+                    document.body.innerHTML = `<div>${decodedContent}</div>`;
                 } else {
                     alert("Only data URLs are allowed.");
                 }
@@ -45,7 +45,7 @@
             }
         }
 
-        function exitEmbeddedPage() {
+        function restoreOriginalContent() {
             document.body.innerHTML = originalContent; // Restore the original content
             createFloatingShapes(); // Reinitialize floating shapes
         }
@@ -74,7 +74,16 @@
             }
         }
 
-        window.onload = createFloatingShapes;
+        window.onload = () => {
+            createFloatingShapes();
+
+            // Add event listener for Esc key to restore original content
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    restoreOriginalContent();
+                }
+            });
+        };
     </script>
 </head>
 <body>
