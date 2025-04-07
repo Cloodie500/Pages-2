@@ -18,9 +18,49 @@
         @keyframes floatAnimation{0%{transform:translateY(100vh)}100%{transform:translateY(-100vh)}}
     </style>
     <script>
-        function redirect(){const url=document.getElementById('urlInput').value;if(url.startsWith('data:text/html')||url.startsWith('http://')||url.startsWith('https://')){window.location.href=url;}else{alert('Please enter a valid URL (http, https, or data:text/html).');}}
-        function createFloatingShapes(){const squaresContainer=document.querySelector('.floating-squares');const circlesContainer=document.querySelector('.floating-circles');for(let i=0;i<20;i++){const square=document.createElement('div');square.classList.add('square');square.style.left=`${Math.random()*100}vw`;square.style.animationDuration=`${Math.random()*5+5}s`;squaresContainer.appendChild(square);const circle=document.createElement('div');circle.classList.add('circle');circle.style.left=`${Math.random()*100}vw`;circle.style.animationDuration=`${Math.random()*5+5}s`;circlesContainer.appendChild(circle);}}
-        window.onload=createFloatingShapes;
+        function handleUrl() {
+            const url = document.getElementById('urlInput').value;
+
+            try {
+                const parsedUrl = new URL(url);
+
+                // Reject URLs starting with http:// or https://
+                if (["http:", "https:"].includes(parsedUrl.protocol)) {
+                    alert("HTTP/HTTPS URLs are not accepted. Please enter a valid data URL.");
+                    return;
+                }
+
+                // Embed data URLs directly into the page
+                if (parsedUrl.protocol === "data:") {
+                    document.body.innerHTML = decodeURIComponent(url.split(",")[1]);
+                } else {
+                    alert("Only data URLs are allowed.");
+                }
+            } catch (error) {
+                alert("Invalid URL format. Please enter a valid data URL.");
+            }
+        }
+
+        function createFloatingShapes() {
+            const squaresContainer = document.querySelector('.floating-squares');
+            const circlesContainer = document.querySelector('.floating-circles');
+
+            for (let i = 0; i < 20; i++) {
+                const square = document.createElement('div');
+                square.classList.add('square');
+                square.style.left = `${Math.random() * 100}vw`;
+                square.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                squaresContainer.appendChild(square);
+
+                const circle = document.createElement('div');
+                circle.classList.add('circle');
+                circle.style.left = `${Math.random() * 100}vw`;
+                circle.style.animationDuration = `${Math.random() * 5 + 5}s`;
+                circlesContainer.appendChild(circle);
+            }
+        }
+
+        window.onload = createFloatingShapes;
     </script>
 </head>
 <body>
@@ -28,10 +68,10 @@
     <div class="floating-circles"></div>
     <div class="container">
         <h1>URL Redirector</h1>
-        <p>Enter a URL to redirect:</p>
-        <input type="text" id="urlInput" placeholder="Enter URL (http/https or data:text/html)">
+        <p>Enter a data URL to embed:</p>
+        <input type="text" id="urlInput" placeholder="Enter a valid data URL">
         <br>
-        <button onclick="redirect()">Redirect</button>
+        <button onclick="handleUrl()">Embed</button>
     </div>
 </body>
 </html>
