@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data URL embedder</title>
+    <title>URL Redirector</title>
     <style>
         body{margin:0;height:100vh;display:flex;justify-content:center;align-items:center;background:linear-gradient(120deg,#8b0a0a,#660000);background-size:300% 300%;animation:gradientAnimation 6s ease infinite;font-family:Arial,sans-serif;overflow:hidden;}
         @keyframes gradientAnimation{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -18,6 +18,8 @@
         @keyframes floatAnimation{0%{transform:translateY(100vh)}100%{transform:translateY(-100vh)}}
     </style>
     <script>
+        let originalContent;
+
         function handleUrl() {
             const url = document.getElementById('urlInput').value;
 
@@ -32,7 +34,9 @@
 
                 // Embed data URLs directly into the page
                 if (parsedUrl.protocol === "data:") {
-                    document.body.innerHTML = decodeURIComponent(url.split(",")[1]);
+                    originalContent = document.body.innerHTML; // Save the original content
+                    const decodedContent = decodeURIComponent(url.split(",")[1]);
+                    document.body.innerHTML = `<div>${decodedContent}</div><button onclick="exitEmbeddedPage()" style="padding:10px 20px;border-radius:5px;background-color:#b22222;color:white;cursor:pointer;margin-top:20px;">Exit</button>`;
                 } else {
                     alert("Only data URLs are allowed.");
                 }
@@ -41,9 +45,19 @@
             }
         }
 
+        function exitEmbeddedPage() {
+            document.body.innerHTML = originalContent; // Restore the original content
+            createFloatingShapes(); // Reinitialize floating shapes
+        }
+
         function createFloatingShapes() {
             const squaresContainer = document.querySelector('.floating-squares');
             const circlesContainer = document.querySelector('.floating-circles');
+
+            if (!squaresContainer || !circlesContainer) return;
+
+            squaresContainer.innerHTML = ""; // Clear existing shapes
+            circlesContainer.innerHTML = ""; // Clear existing shapes
 
             for (let i = 0; i < 20; i++) {
                 const square = document.createElement('div');
