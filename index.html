@@ -32,11 +32,12 @@
                     return;
                 }
 
-                // Embed data URLs directly into the page
+                // Embed data URLs directly into an iframe
                 if (parsedUrl.protocol === "data:") {
                     originalContent = document.body.innerHTML; // Save the original content
-                    const decodedContent = decodeURIComponent(url.split(",")[1]);
-                    document.body.innerHTML = `<div>${decodedContent}</div>`;
+                    document.body.innerHTML = `
+                        <iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>
+                    `;
                 } else {
                     alert("Only data URLs are allowed.");
                 }
