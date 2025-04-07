@@ -19,6 +19,7 @@
     </style>
     <script>
         let originalContent;
+        let originalBodyStyle;
 
         function handleUrl() {
             const url = document.getElementById('urlInput').value;
@@ -35,6 +36,12 @@
                 // Embed data URLs directly into an iframe
                 if (parsedUrl.protocol === "data:") {
                     originalContent = document.body.innerHTML; // Save the original content
+                    originalBodyStyle = document.body.style.cssText; // Save original body styles
+
+                    // Remove background animation and styles
+                    document.body.style.background = 'white';
+                    document.body.style.animation = 'none';
+
                     document.body.innerHTML = `
                         <iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>
                     `;
@@ -48,6 +55,7 @@
 
         function restoreOriginalContent() {
             document.body.innerHTML = originalContent; // Restore the original content
+            document.body.style.cssText = originalBodyStyle; // Restore original body styles
             createFloatingShapes(); // Reinitialize floating shapes
         }
 
