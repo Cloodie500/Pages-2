@@ -16,6 +16,7 @@
         .square{width:20px;height:20px;}
         .circle{width:20px;height:20px;border-radius:50%;}
         @keyframes floatAnimation{0%{transform:translateY(100vh)}100%{transform:translateY(-100vh)}}
+        iframe {position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 3; background: white;}
     </style>
     <script>
         let originalContent;
@@ -43,7 +44,7 @@
                     document.body.style.animation = 'none';
 
                     document.body.innerHTML = `
-                        <iframe src="${url}" style="width:100%;height:100%;border:none;"></iframe>
+                        <iframe src="${url}" style="z-index: 3;"></iframe>
                     `;
                 } else {
                     alert("Only data URLs are allowed.");
